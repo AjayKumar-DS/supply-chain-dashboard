@@ -20,10 +20,10 @@ def changing_columns_name_values(data: pd.DataFrame) -> pd.DataFrame:
     column_data["date"] = pd.to_datetime(column_data["date"],dayfirst=True, errors="coerce")
 
     #Drop rows with invalid data
-    column_data = column_data.dropna("Stockout_Flag")
+    column_data = column_data.drop(columns=["stockout_flag"])
 
     # handle missing values (fill missing values with 'unknown')
-    df = df.fillna("Unknown")
+    column_data = column_data.fillna("Unknown")
     return column_data
 
 
