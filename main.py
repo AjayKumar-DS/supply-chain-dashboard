@@ -17,8 +17,8 @@ import analysis.analysis_rq5 as vis_rq5
 df = pd.read_csv("./data/supply_chain_dataset1.csv")
 
 # Apply data cleaning and transformation
-dm.clean_data(df)
-dm.changing_columns_name_values(df)
+df = dm.clean_data(df)
+df = dm.changing_columns_name_values(df)
 
 # RQ1:
 title_rq1 = "RQ1: What is the distribution of genres on Netflix?"

@@ -2,7 +2,6 @@ import pandas as pd
 
 
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
-    
     # remove duplicates
     df = df.drop_duplicates()
     return df
