@@ -3,16 +3,8 @@ import pandas as pd
 
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     
-    """
-    cleans dataset:
-    - removes duplicates
-    - handles missing values
-    - standardizes column names
-    """
     # remove duplicates
     df = df.drop_duplicates()
-    # handle missing values (fill missing values with 'unknown')
-    df = df.fillna("Unknown")
     return df
 
 def changing_columns_name_values(data: pd.DataFrame) -> pd.DataFrame:
@@ -29,6 +21,9 @@ def changing_columns_name_values(data: pd.DataFrame) -> pd.DataFrame:
 
     #Drop rows with invalid data
     column_data = column_data.dropna("Stockout_Flag")
+
+    # handle missing values (fill missing values with 'unknown')
+    df = df.fillna("Unknown")
     return column_data
 
 
