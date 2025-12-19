@@ -1,154 +1,99 @@
 import analysis.data_modelling as dm
-
 import pandas as pd
 import plotly.express as px
 
-
-# -------------------------------------------------
-# RQ1: How do lead times vary between suppliers?
-# -------------------------------------------------
-
+# RQ3.1: Average Lead Time by Supplier
 def plot_avg_lead_time(df: pd.DataFrame):
-    """
-    Bar chart showing average lead time for each supplier
-    """
+    avg_df = (
+        df.groupby("supplier_id", as_index=False)["supplier_lead_time_days"]
+        .mean()
+        .rename(columns={"supplier_lead_time_days": "avg_lead_time"})
+    )
 
-    avg_df = df.groupby("supplier_id", as_index=False)["supplier_lead_time_days"].mean()
+    # supplier_id as a category
+    avg_df["supplier_id"] = avg_df["supplier_id"].astype(str)
 
-    fig = px.bar(
-        avg_df,
+    bar_fig = px.bar(
+        avg_df.round(2),
         x="supplier_id",
-        y="supplier_lead_time_days",
-        title="Average Lead Time by Supplier",
+        y="avg_lead_time",
+        title="<b>Average Lead Time by Supplier</b>",
         labels={
-            "supplier_id": "Supplier",
-            "supplier_lead_time_days": "Average Lead Time (days)"
+            "supplier_id": "Supplier ID",
+            "avg_lead_time": "Average Lead Time (days)"
         },
         template="plotly_white",
         height=450
     )
-    fig.update_layout(
-    xaxis=dict(
-        tickmode="linear",
-        dtick=1
-        )
-    )
-
-    return fig
+    return bar_fig
 
 
-# -------------------------------------------------
-# RQ2: Which suppliers are most consistent?
-# -------------------------------------------------
-
+# RQ3.2: Lead Time Distribution by Supplier
 def plot_lead_time_box(df: pd.DataFrame):
-    """
-    Box plot showing lead time variation per supplier
-    """
+    df_plot = df.copy()
+    df_plot["supplier_id"] = df_plot["supplier_id"].astype(str)
 
-    fig = px.box(
-        df,
+    supplier_order = sorted(df_plot["supplier_id"].unique(), key=int)
+
+    box_fig = px.box(
+        df_plot,
         x="supplier_id",
         y="supplier_lead_time_days",
-        title="Lead Time Distribution by Supplier",
+        title="<b>Lead Time Distribution by Supplier</b>",
         labels={
-            "supplier_id": "Supplier",
+            "supplier_id": "Supplier ID",
             "supplier_lead_time_days": "Lead Time (days)"
         },
         template="plotly_white",
         height=450
     )
-    fig.update_layout(
-    xaxis=dict(
-        tickmode="linear",
-        dtick=1
-        )
+    box_fig.update_xaxes(categoryorder="array", categoryarray=supplier_order)
+    return box_fig
+
+# SUMMARY TABLE
+def supplier_summary_table(df: pd.DataFrame):
+    summary = (
+        df.groupby("supplier_id")["supplier_lead_time_days"]
+        .agg(["mean", "median", "min", "max", "std", "count"])
+        .reset_index()
     )
 
-    return fig
+    summary.columns = [
+        "Supplier ID",
+        "Average Lead Time (Days)",
+        "Median Lead Time (Days)",
+        "Minimum Lead Time (Days)",
+        "Maximum Lead Time (Days)",
+        "Lead Time Variability (Std Dev)",
+        "Total Orders",
+    ]
+    return summary.round(2)
 
-
-# -------------------------------------------------
-# SUMMARY TABLE: Supplier performance overview
-# -------------------------------------------------
-
-def supplier_summary_table(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Creates a summary table for suppliers:
-    - average lead time
-    - median lead time
-    - lead time variability (std dev)
-    - number of orders
-    """
-
-    summary = df.groupby("supplier_id", as_index=False)["supplier_lead_time_days"].agg(
-        min_lead_time="min",
-        max_lead_time="max",
-        avg_lead_time="mean",
-        median_lead_time="median",
-        lead_time_std="std",
-        order_count="count"
-    )
-
-    return summary
-
-
-# -------------------------------------------------
-# RQ3: Relationship between average lead time & consistency
-# -------------------------------------------------
-
+# RQ3.3: Mean vs Variability 
 def plot_mean_vs_std(df: pd.DataFrame):
-    """
-    Scatter plot comparing average lead time and variability
-    """
-
     stats = df.groupby("supplier_id", as_index=False)["supplier_lead_time_days"] \
               .agg(mean_lt="mean", std_lt="std")
 
-    fig = px.scatter(
-        stats,
+    scatter_fig = px.scatter(
+        stats.round(2),
         x="mean_lt",
         y="std_lt",
         text="supplier_id",
-        title="Average Lead Time vs Consistency",
+        title="<b>Average Lead Time vs Variability (All Suppliers)</b>",
         labels={
             "mean_lt": "Average Lead Time (days)",
-            "std_lt": "Lead Time Variability"
+            "std_lt": "Lead Time Variability (Std Dev)"
         },
         template="plotly_white",
-        height=420
+        height=450
     )
 
-    return fig
-
-
-# -------------------------------------------------
-# RQ4: Is lead time related to inventory levels?
-# -------------------------------------------------
-
-def plot_lead_time_vs_inventory(df: pd.DataFrame):
-    """
-    Scatter plot showing lead time vs inventory (if available)
-    """
-
-
-    inv_df = df.groupby("supplier_id", as_index=False).agg(
-        mean_lt=("supplier_lead_time_days", "mean"),
-        avg_inventory=("inventory_level", "mean")
+    scatter_fig.update_traces(
+        textposition="top center",
+        textfont=dict(size=12, color="black"),
+        marker=dict(size=10)
     )
+    
+    scatter_fig.update_layout(margin=dict(l=60, r=40, t=60, b=60))
+    return scatter_fig
 
-    fig = px.scatter(
-        inv_df,
-        x="mean_lt",
-        y="avg_inventory",
-        text="supplier_id",
-        title="Average Lead Time vs Inventory Level",
-        labels={
-            "mean_lt": "Average Lead Time (days)",
-            "avg_inventory": "Average Inventory"
-        },
-        template="plotly_white",
-        height=420
-    )
-
-    return fig
