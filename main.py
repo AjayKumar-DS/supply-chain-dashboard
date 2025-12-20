@@ -4,7 +4,7 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 
 import analysis.data_modelling as dm
-# import analysis.analysis_rq1 as vis_rq1
+import analysis.analysis_rq1 as vis_rq1
 # import analysis.analysis_rq2 as vis_rq2
 import analysis.analysis_rq3 as vis_rq3
 # import analysis.analysis_rq4 as vis_rq4
@@ -17,13 +17,16 @@ df = pd.read_csv("data/supply_chain_dataset1.csv")
 df = dm.clean_data(df)
 df = dm.changing_columns_name_values(df)
 
+df_rq1 = vis_rq1.prep_data(df)
+
 suppliers = sorted(df["supplier_id"].unique())
 
 
 # RQ1 (PLACEHOLDER – UNCHANGED)
-title_rq1 = "RQ1: What is the distribution of genres on Netflix?"
-text_rq1 = "This analysis explores the frequency of different genres available on Netflix."
-fig_rq1 = None
+title_rq1 = "RQ1: How accurate is the forecast overall, and which products, locations, or promotions are causing the biggest errors?"
+text_rq1 = "This analysis explores how accurate the sales predictions are. It finds the biggest errors by product and location, and shows how promotions affect the results."
+fig_rq1_line = vis_rq1.create_static_line_chart(df_rq1)
+fig_rq1_box = vis_rq1.create_promo_box_plot(df_rq1)
 rq1_plot_id = "rq1-plot"
 
 # RQ2 (PLACEHOLDER – UNCHANGED)
@@ -72,6 +75,50 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.layout = dbc.Container(
     [
         html.H1("Supply Chain Dashboard", className="text-center my-4"),
+
+        # ===================== RQ1 SECTION =====================
+
+        dbc.Row(dbc.Col(html.H3(title_rq1, className="text-center text-primary"))),
+        dbc.Row(dbc.Col(html.P(text_rq1, className="text-center lead"))),
+
+        # Static Line Chart
+        dbc.Row(dbc.Col(dcc.Graph(figure=fig_rq1_line))),
+        html.Hr(),
+
+        # Filters 
+        html.Label("Select Warehouse:"),
+        dcc.Dropdown(
+            id="rq1-warehouse-dropdown",
+            options=["All Warehouses"] + sorted(df['warehouse_id'].unique().tolist()),
+            value='All Warehouses',
+            clearable=False
+        ),
+        
+        html.Br(), # Simple line break
+        
+        html.Label("Select Region:"),
+        dcc.Dropdown(
+            id="rq1-region-dropdown",
+            options=["All Regions"] + sorted(df['region'].unique().tolist()),
+            value='All Regions',
+            clearable=False
+        ),
+
+        html.Br(),
+
+        # Dynamic Bar Chart
+        html.H4("Top 10 Worst Performing SKUs"),
+        dbc.Row(dbc.Col(dcc.Graph(id="rq1-worst-performing-bar"))),
+
+        html.Hr(),
+
+        # Box Plot
+        html.H4("Forecast Stability (Promotions)"),
+        dbc.Row(dbc.Col(dcc.Graph(figure=fig_rq1_box))),
+
+        html.Hr(style={'borderTop': '3px solid #bbb'}), # Separator line
+
+        #========================================================
 
         # ===================== RQ3 SECTION =====================
         dbc.Row(
@@ -144,6 +191,20 @@ app.layout = dbc.Container(
     ],
     fluid=True
 )
+
+#CALLBACK (RQ1)
+@app.callback(
+    Output("rq1-worst-performing-bar", "figure"),
+    [Input('rq1-warehouse-dropdown', "value"), 
+     Input('rq1-region-dropdown', "value")]
+)
+def update_rq1_bar_chart(warehouse_id, region_id):
+
+    df_filtered = vis_rq1.filter_dataframe(df, warehouse_id, region_id)
+    
+    fig_sku = vis_rq1.create_worst_performing_chart(df_filtered)
+
+    return fig_sku
 
 # CALLBACK (ONLY RQ3 LOGIC)
 @app.callback(
