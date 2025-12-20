@@ -19,7 +19,10 @@ df = dm.changing_columns_name_values(df)
 
 df_rq1 = vis_rq1.prep_data(df)
 
+#Lists of unique IDs
 suppliers = sorted(df["supplier_id"].unique())
+warehouses = sorted(df['warehouse_id'].unique().tolist())
+regions = sorted(df['region'].unique().tolist())
 
 
 # RQ1 (PLACEHOLDER – UNCHANGED)
@@ -89,7 +92,7 @@ app.layout = dbc.Container(
         html.Label("Select Warehouse:"),
         dcc.Dropdown(
             id="rq1-warehouse-dropdown",
-            options=["All Warehouses"] + sorted(df['warehouse_id'].unique().tolist()),
+            options=["All Warehouses"] + warehouses,
             value='All Warehouses',
             clearable=False
         ),
@@ -99,7 +102,7 @@ app.layout = dbc.Container(
         html.Label("Select Region:"),
         dcc.Dropdown(
             id="rq1-region-dropdown",
-            options=["All Regions"] + sorted(df['region'].unique().tolist()),
+            options=["All Regions"] + regions,
             value='All Regions',
             clearable=False
         ),
@@ -200,7 +203,7 @@ app.layout = dbc.Container(
 )
 def update_rq1_bar_chart(warehouse_id, region_id):
 
-    df_filtered = vis_rq1.filter_dataframe(df, warehouse_id, region_id)
+    df_filtered = vis_rq1.filter_dataframe(df_rq1, warehouse_id, region_id)
     
     fig_sku = vis_rq1.create_worst_performing_chart(df_filtered)
 
