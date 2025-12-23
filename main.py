@@ -141,6 +141,9 @@ app.layout = dbc.Container(
 
         #========================================================
 
+        # ===================== RQ2 SECTION =====================
+        #========================================================
+
         # ===================== RQ3 SECTION =====================
         dbc.Row(
             dbc.Col(html.H3(title_rq3, className="text-center text-primary")),
@@ -210,15 +213,14 @@ app.layout = dbc.Container(
         )
     ),
 
+        #========================================================
         # ===================== RQ4 SECTION =====================
     
         # ===================== RQ5 SECTION =====================
-        # Dashboard Title
-        dbc.Row(dbc.Col(html.H2(title_rq5, className="text-center text-primary"))),
+        html.Hr(),
+        dbc.Row(dbc.Col(html.H2(title_rq5, className="text-center text-primary mt-3"))),
         dbc.Row(dbc.Col(html.P(text_rq5, className="text-center lead"))),
         
-        html.Hr(),
-
         # Filters
         dbc.Row(
             dbc.Col(
@@ -292,6 +294,7 @@ app.layout = dbc.Container(
                 className="mx-auto"
             ),
         ),
+        #========================================================
     ],
     fluid=True
 )
