@@ -5,7 +5,62 @@ import dash_bootstrap_components as dbc
 import plotly.express as px
 import analysis.data_modelling as dm
 
-# filters
+def get_top_n_products_sold(df: pd.DataFrame, number_of_products: int) -> pd.DataFrame:
+    """
+    Gets n most sold products by units sold across all regions.
+
+    :param df: a dataframe with supply chain data set
+    :type df: pd.DataFrame
+
+    :param number_of_products: number of products to return.
+    :type number_of_products: int
+
+    :return: a dataframe containing n top products by units sold.
+    The dataframe has two columns - product_id and units_sold
+    """
+
+    # Pseudo code
+    # Create empty dictionary for units_sold_per_product
+    # Go line by line through the data set
+    # For each line, use column product_id as dictionary key, and column units_sold as value (int)
+    # If units_sold_per_product dictionary doesn't have the key yet, add it with units_sold = 0
+    # Add value from units_sold column, to the value already in units_sold_per_product dictionary
+
+    # define column names
+    column_product_id_name = "product_id"
+    column_units_sold_name = "units_sold"
+
+    # df.values cannot be used in combination with string column names to get values from the row
+    # use get_loc to get index of each column
+    column_product_id_index = df.columns.get_loc(column_product_id_name)
+    column_units_sold_index = df.columns.get_loc(column_units_sold_name)
+
+    # empty dictionary for sale statistics
+    units_sold_per_product_dict = dict()
+
+    # go through all rows
+    for row in df.values:
+        product_id = row[column_product_id_index]
+        units_sold = row[column_units_sold_index]
+
+        # if product_id already exists in dictionary, add up the units sold
+        if product_id in units_sold_per_product_dict:
+            units_sold_per_product_dict[product_id] += units_sold
+        else:
+            units_sold_per_product_dict[product_id] = units_sold
+
+    # from the dictionary, create a pandas df that has a column with product_id and a column with units_sold
+    # order the df by units_sold descending
+    units_sold_per_product_df = pd.DataFrame(
+        list(units_sold_per_product_dict.items()),
+        columns=[column_product_id_name, column_units_sold_name],
+    ).sort_values(by=column_units_sold_name, ascending=False)
+
+    # take first number_of_products items
+    units_sold_per_product_df = units_sold_per_product_df.head(number_of_products)
+
+    return units_sold_per_product_df
+
 def get_number_of_products_filter_selector(number_of_products: int):
     """
     Gets selector for number of products filter
@@ -20,7 +75,7 @@ def get_number_of_products_filter_selector(number_of_products: int):
     return dcc.Dropdown(
         [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         number_of_products,
-        id="top_products_filter",
+        id="rq5_top_products_filter",
     )
 
 
@@ -54,7 +109,7 @@ def get_month_range_filter_selector(from_month: int, to_month: int):
 
     # https://dash.plotly.com/dash-core-components/rangeslider
     return dcc.RangeSlider(
-        id="months_filter", min=1, max=12, step=1, value=[1, 12], marks=MonthNames
+        id="rq5_months_filter", min=1, max=12, step=1, value=[1, 12], marks=MonthNames
     )
 
 

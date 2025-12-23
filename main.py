@@ -8,7 +8,7 @@ import analysis.analysis_rq1 as vis_rq1
 # import analysis.analysis_rq2 as vis_rq2
 import analysis.analysis_rq3 as vis_rq3
 # import analysis.analysis_rq4 as vis_rq4
-# import analysis.analysis_rq5 as vis_rq5
+import analysis.analysis_rq5 as vis_rq5
 
 
 # Loaded the data
@@ -64,11 +64,30 @@ rq4_plot_id = "rq4-plot"
 
 
 # RQ5 (PLACEHOLDER – UNCHANGED)
-title_rq5 = "RQ5: YOUR TITLE HERE"
-text_rq5 = "YOUR THOROUGH EXPLANATION HERE"
-fig_rq5 = None
-rq5_plot_id = "rq5-plot"
+title_rq5 = "RQ5: Sales performance of top products"
+text_rq5 = "This analysis explores how the demand for top selling products varies in different regions and months"
 
+rq5_n_products_to_show = 3
+rq5_month_from = 1
+rq5_month_to = 12
+
+rq5_top_n_products = vis_rq5.get_top_n_products_sold(df, rq5_n_products_to_show)
+
+rq5_sq2_sale_performance_per_region_df = (
+    vis_rq5.get_sale_performance_for_products_across_regions(df, rq5_top_n_products)
+)
+rq5_sq2_graph_id = "sale_across_regions_graph"
+rq5_sq2_graph_figure = vis_rq5.plot_sale_performance_for_products_across_regions(
+    rq5_sq2_sale_performance_per_region_df
+)
+
+rq5_sq3_demand_per_month_df = vis_rq5.get_demand_per_month(
+    df, rq5_top_n_products, rq5_month_from, rq5_month_to
+)
+rq5_sq3_demand_per_month_graph_id = "demand_over_time_graph"
+rq5_sq3_demand_per_month_graph_figure = vis_rq5.plot_demand_per_month(
+    rq5_sq3_demand_per_month_df
+)
 
 # INITIALIZE DASH APP
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -189,7 +208,90 @@ app.layout = dbc.Container(
             ),
             width=12
         )
-    )
+    ),
+
+        # ===================== RQ4 SECTION =====================
+    
+        # ===================== RQ5 SECTION =====================
+        # Dashboard Title
+        dbc.Row(dbc.Col(html.H2(title_rq5, className="text-center text-primary"))),
+        dbc.Row(dbc.Col(html.P(text_rq5, className="text-center lead"))),
+        
+        html.Hr(),
+
+        # Filters
+        dbc.Row(
+            dbc.Col(
+                html.H3("Filters", className="text-center text-primary"),
+                width=12
+            )
+        ),
+        dbc.Row(
+            dbc.Col(html.Label("Number of top products to show"), width=12, className="text-center mb-3")
+        ),
+        dbc.Row(
+            dbc.Col(
+                vis_rq5.get_number_of_products_filter_selector(
+                    rq5_n_products_to_show
+                ),
+                width=3,
+                className="mx-auto"
+            ),
+            className="mb-5",
+        ),
+
+        # Sales performance across regions
+        dbc.Row(
+            dbc.Col(
+                html.H3(
+                    "How does sales performance for the top products vary across different regions?",
+                    className="text-center text-primary",
+                ),
+                width=12,
+            ),
+            className="mb-3",
+        ),
+        dbc.Row(
+            dbc.Col(
+                dcc.Graph(id=rq5_sq2_graph_id, figure=rq5_sq2_graph_figure),
+                width="auto",
+                className="mx-auto"
+            ),
+            className="mb-5",
+        ),
+        # Demand change over period of time
+        dbc.Row(
+            dbc.Col(
+                html.H3(
+                    "Does the demand for top products change over time, and are there noticeable sales peaks?",
+                    className="text-center text-primary",
+                ),
+                width=12,
+            ),
+            className="mb-3",
+        ),
+        # Date filter only applied for this question
+        dbc.Row(dbc.Col(html.Label("Month range"), width=12, className="text-center mb-3")),
+        dbc.Row(
+            dbc.Col(
+                vis_rq5.get_month_range_filter_selector(
+                    rq5_month_from, rq5_month_to
+                ),
+                width=6,
+                className="mx-auto"
+            ),
+            className="mb-3",
+        ),
+        dbc.Row(
+            dbc.Col(
+                dcc.Graph(
+                    id=rq5_sq3_demand_per_month_graph_id,
+                    figure=rq5_sq3_demand_per_month_graph_figure,
+                ),
+                width="auto",
+                className="mx-auto"
+            ),
+        ),
     ],
     fluid=True
 )
@@ -234,6 +336,47 @@ def update_rq3(selected_suppliers):
     responsive=True
     )
     return fig_bar, fig_box, table
+
+# CALLBACK (ONLY RQ5)
+@app.callback(
+    Output(rq5_sq2_graph_id, "figure"), [Input("rq5_top_products_filter", "value")]
+)
+def rq5_update_sales_per_region_chart(number_of_products_to_show):
+    # filter dataset for new number of products
+    products_to_plot = vis_rq5.get_top_n_products_sold(df, number_of_products_to_show)
+
+    # create data structure for products included
+    products_to_plot_df = vis_rq5.get_sale_performance_for_products_across_regions(
+        df, products_to_plot
+    )
+
+    # create figure from data structure
+    new_graph = vis_rq5.plot_sale_performance_for_products_across_regions(
+        products_to_plot_df
+    )
+    return new_graph
+
+
+# update performance per month
+@app.callback(
+    Output(rq5_sq3_demand_per_month_graph_id, "figure"),
+    [Input("rq5_top_products_filter", "value"), Input("rq5_months_filter", "value")],
+)
+def rq5_update_sales_per_month_graph(number_of_products_to_show, month_range):
+    month_from = month_range[0]
+    month_to = month_range[1]
+
+    # filter dataset for new number of products and month range
+    products_to_plot = vis_rq5.get_top_n_products_sold(df, number_of_products_to_show)
+
+    # create data structure for products included
+    products_to_plot_df = vis_rq5.get_demand_per_month(
+        df, products_to_plot, month_from, month_to
+    )
+
+    # create figure from data structure
+    new_graph = vis_rq5.plot_demand_per_month(products_to_plot_df)
+    return new_graph
 
 # RUN APP
 if __name__ == "__main__":
