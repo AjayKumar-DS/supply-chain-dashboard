@@ -20,10 +20,9 @@ df = dm.changing_columns_name_values(df)
 df_rq1 = vis_rq1.prep_data(df)
 
 #Lists of unique IDs
-suppliers = sorted(df["supplier_id"].unique())
-warehouses = sorted(df['warehouse_id'].unique().tolist())
-regions = sorted(df['region'].unique().tolist())
-
+suppliers = dm.get_unique_supplier_id_list(df)
+warehouses = dm.get_unique_warehouse_id_list(df)
+regions = dm.get_unique_region_list(df)
 
 # RQ1 (PLACEHOLDER – UNCHANGED)
 title_rq1 = "RQ1: How accurate is the forecast overall, and which products, locations, or promotions are causing the biggest errors?"
