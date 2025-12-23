@@ -25,6 +25,7 @@ def changing_columns_name_values(data: pd.DataFrame) -> pd.DataFrame:
     - converts column 'date' to date
     - removes 'stockout_flag' column - it has invalid data
     - replaces missing values with 'Unknown'
+    - adds month column
 
     :param df: a dataframe to transform
     :type df: pd.DataFrame
@@ -42,6 +43,7 @@ def changing_columns_name_values(data: pd.DataFrame) -> pd.DataFrame:
 
     # convert Date column to datetime
     column_data["date"] = pd.to_datetime(column_data["date"], errors="coerce")
+    column_data["month"] = column_data["date"].dt.month
 
     #Drop rows with invalid data
     column_data = column_data.drop(columns=["stockout_flag"])
