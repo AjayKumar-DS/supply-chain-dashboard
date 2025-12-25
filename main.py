@@ -18,6 +18,7 @@ df = dm.clean_data(df)
 df = dm.changing_columns_name_values(df)
 
 df_rq1 = vis_rq1.prep_data(df)
+df_promo = vis_rq2.prepare_promotion_data(df)
 
 #Lists of unique IDs
 suppliers = dm.get_unique_supplier_id_list(df)
@@ -32,10 +33,14 @@ fig_rq1_box = vis_rq1.create_promo_box_plot(df_rq1)
 rq1_plot_id = "rq1-plot"
 
 # RQ2 (PLACEHOLDER – UNCHANGED)
-title_rq2 = "RQ2: YOUR TITLE HERE"
-text_rq2 = "YOUR THOROUGH EXPLANATION HERE"
-fig_rq2 = None
-rq2_plot_id = "rq2-plot"
+title_rq2 = """RQ2:  How do promotions impact sales volume/profitability? Is there a pattern - when the 
+promotions are running or in which regions? How many product promotions are usually running 
+at the same time?"""
+text_rq2 = """This analysis examines how promotional campaigns affect average sales,
+            profitability, and how promotions are distributed across regions."""
+fig_promo_sales = vis_rq2.plot_avg_units_sold(df_promo)
+fig_promo_profit = vis_rq2.plot_avg_profit(df_promo)
+fig_promo_region = vis_rq2.plot_promotions_by_region(df_promo)
 
 # RQ3
 title_rq3 = """
@@ -142,17 +147,19 @@ app.layout = dbc.Container(
         #========================================================
 
         # ===================== RQ2 SECTION =====================
+        # ===================== RQ2 SECTION =====================
+        html.Hr(),
+        dbc.Row(dbc.Col(html.H2(title_rq2, className="text-center text-primary mt-3"))),
+        dbc.Row(dbc.Col(html.P(text_rq2, className="text-center lead"))),
+        dbc.Row(dbc.Col(dcc.Graph(figure=fig_promo_sales), width=12)),
+        dbc.Row(dbc.Col(dcc.Graph(figure=fig_promo_profit), width=12)),
+        dbc.Row(dbc.Col(dcc.Graph(figure=fig_promo_region), width=12)),
         #========================================================
 
         # ===================== RQ3 SECTION =====================
-        dbc.Row(
-            dbc.Col(html.H3(title_rq3, className="text-center text-primary")),
-            className="mb-3"
-        ),
-        dbc.Row(
-            dbc.Col(html.P(text_rq3, className="text-center lead")),
-            className="mb-4"
-        ),
+        html.Hr(),
+        dbc.Row(dbc.Col(html.H2(title_rq3, className="text-center text-primary mt-3"))),
+        dbc.Row(dbc.Col(html.P(text_rq3, className="text-center lead"))),
 
         # Dropdown and Bar chart
         dbc.Row(
@@ -174,9 +181,7 @@ app.layout = dbc.Container(
             width=2
         ),
          dbc.Col(
-            dcc.Graph(id=rq3_plot_id_1),
-            width=10
-        ),
+            dcc.Graph(id=rq3_plot_id_1),width=10),
         ],
     className="mb-4"
 ),
@@ -190,10 +195,7 @@ app.layout = dbc.Container(
                 dbc.CardBody(
                     [
                         html.B("Supplier Summary Table",className="fw-bold text-center mb-2"),
-                        html.Div(
-                            id=rq3_table_id,
-                            style={"overflowX": "auto"}
-                        ),
+                        html.Div(id=rq3_table_id,style={"overflowX": "auto"}),
                     ]
                 )
             ),
