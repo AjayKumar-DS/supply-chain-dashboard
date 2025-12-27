@@ -1,11 +1,8 @@
 import pandas as pd
 import plotly.express as px
-from data_modelling import clean_data, changing_columns_name_values
+import analysis.data_modelling as dm
 
-def prep_data(dataframe):
-    df = clean_data(dataframe)
-    df = changing_columns_name_values(df)
-
+def prep_data(df):
 
     cols = ['date', 'product_id', 'warehouse_id', 'supplier_id',
             'region', 'units_sold', 'promotion_flag', 'demand_forecast']
@@ -63,4 +60,5 @@ def create_promo_box_plot(df_filtered):
     fig.update_layout(plot_bgcolor="white", showlegend=False)
     fig.update_yaxes(gridcolor='#eee', zeroline=True)
     return fig
+
 
