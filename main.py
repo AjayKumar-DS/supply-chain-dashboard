@@ -119,7 +119,7 @@ app.layout = dbc.Container(
         # Line Chart 
         dbc.Row(
             dbc.Col(dcc.Graph(figure=fig_rq1_line), width=12),
-            className="mb-5"  # Large gap before filters
+            className="mb-5"  
         ),
 
         # Filters 
