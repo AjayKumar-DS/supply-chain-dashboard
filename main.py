@@ -104,45 +104,69 @@ app.layout = dbc.Container(
 
         # ===================== RQ1 SECTION =====================
 
-        dbc.Row(dbc.Col(html.H3(title_rq1, className="text-center text-primary"))),
-        dbc.Row(dbc.Col(html.P(text_rq1, className="text-center lead"))),
+        # Title
+        dbc.Row(
+            dbc.Col(html.H3(title_rq1, className="text-center text-primary"), width=12),
+            className="mb-3"
+        ),
+        
+        # Text Description
+        dbc.Row(
+            dbc.Col(html.P(text_rq1, className="text-center lead"), width=12),
+            className="mb-4"
+        ),
 
-        # Static Line Chart
-        dbc.Row(dbc.Col(dcc.Graph(figure=fig_rq1_line))),
-        html.Hr(),
+        # Line Chart 
+        dbc.Row(
+            dbc.Col(dcc.Graph(figure=fig_rq1_line), width=12),
+            className="mb-5"  # Large gap before filters
+        ),
 
         # Filters 
-        html.Label("Select Warehouse:"),
-        dcc.Dropdown(
-            id="rq1-warehouse-dropdown",
-            options=["All Warehouses"] + warehouses,
-            value='All Warehouses',
-            clearable=False
+        dbc.Row(
+            [
+                dbc.Col([
+                    html.Label("Select Warehouse:"),
+                    dcc.Dropdown(
+                        id="rq1-warehouse-dropdown",
+                        options=["All Warehouses"] + warehouses,
+                        value='All Warehouses',
+                        clearable=False
+                    )
+                ], width=6),  
+                
+                dbc.Col([
+                    html.Label("Select Region:"),
+                    dcc.Dropdown(
+                        id="rq1-region-dropdown",
+                        options=["All Regions"] + regions,
+                        value='All Regions',
+                        clearable=False
+                    )
+                ], width=6),  
+            ],
+            className="mb-5" 
         ),
-        
-        html.Br(), # Simple line break
-        
-        html.Label("Select Region:"),
-        dcc.Dropdown(
-            id="rq1-region-dropdown",
-            options=["All Regions"] + regions,
-            value='All Regions',
-            clearable=False
+
+        # Dynamic Bar Chart 
+        dbc.Row(
+            dbc.Col(html.H4("Top 10 Worst Performing SKUs"), width=12),
+            className="mb-3"
+        ),
+        dbc.Row(
+            dbc.Col(dcc.Graph(id="rq1-worst-performing-bar"), width=12),
+            className="mb-5" 
         ),
 
-        html.Br(),
-
-        # Dynamic Bar Chart
-        html.H4("Top 10 Worst Performing SKUs"),
-        dbc.Row(dbc.Col(dcc.Graph(id="rq1-worst-performing-bar"))),
-
-        html.Hr(),
-
-        # Box Plot
-        html.H4("Forecast Stability (Promotions)"),
-        dbc.Row(dbc.Col(dcc.Graph(figure=fig_rq1_box))),
-
-        html.Hr(style={'borderTop': '3px solid #bbb'}), # Separator line
+        # Box Plot 
+        dbc.Row(
+            dbc.Col(html.H4("Forecast Stability (Promotions)"), width=12),
+            className="mb-3"
+        ),
+        dbc.Row(
+            dbc.Col(dcc.Graph(figure=fig_rq1_box), width=12),
+            className="mb-4"
+        ), 
 
         #========================================================
 
