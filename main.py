@@ -5,7 +5,7 @@ import pandas as pd
 
 import analysis.data_modelling as dm
 import analysis.analysis_rq1 as vis_rq1
-# import analysis.analysis_rq2 as vis_rq2
+import analysis.analysis_rq2 as vis_rq2
 import analysis.analysis_rq3 as vis_rq3
 import analysis.analysis_rq4 as vis_rq4
 import analysis.analysis_rq5 as vis_rq5
@@ -62,20 +62,13 @@ rq3_table_id = "rq3-table"
 
 
 # RQ4 (PLACEHOLDER – UNCHANGED)
-title_rq4 = """Inventory/replenishment.
-1: Are the inventory levels of products aligned with the sales demand?
+title_rq4 = """RQ4: Inventory/replenishment."""
+
+text_rq4 = """ Are the inventory levels of products aligned with the sales demand?
 2: How many weeks of inventory cover do the products have?
 3: Is the re-order point appropriate based on the actual demand? """
 
-text_rq4 = "In this part, Ill be measuring inventory levels of different warehouses and if the company always have stock enough. So secure stock outages doesnt occour"
-
-default_sku_id = df["sku_id"].iloc[0]
-default_warehouse_id = df["warehouse_id"].iloc[0]
-
-fig_rq4_SawPlot = vis_rq4.plot_inventory_vs_sales_time(df, default_sku_id, default_warehouse_id)
-fig_rq4_Bars = vis_rq4.plot_weeks_of_inventory_cover(df, top_n=20)
-fig_rq4_Scatter = vis_rq4.plot_reorder_point_vs_leadtime_demand(df, top_n=200)
-
+rq4_plot_id = "rq4-plot"
 
 
 # RQ5 (PLACEHOLDER – UNCHANGED)
@@ -119,20 +112,20 @@ app.layout = dbc.Container(
             dbc.Col(html.H3(title_rq1, className="text-center text-primary"), width=12),
             className="mb-3"
         ),
-        
+
         # Text Description
         dbc.Row(
             dbc.Col(html.P(text_rq1, className="text-center lead"), width=12),
             className="mb-4"
         ),
 
-        # Line Chart 
+        # Line Chart
         dbc.Row(
             dbc.Col(dcc.Graph(figure=fig_rq1_line), width=12),
-            className="mb-5"  
+            className="mb-5"
         ),
 
-        # Filters 
+        # Filters
         dbc.Row(
             [
                 dbc.Col([
@@ -143,8 +136,8 @@ app.layout = dbc.Container(
                         value='All Warehouses',
                         clearable=False
                     )
-                ], width=6),  
-                
+                ], width=6),
+
                 dbc.Col([
                     html.Label("Select Region:"),
                     dcc.Dropdown(
@@ -153,22 +146,22 @@ app.layout = dbc.Container(
                         value='All Regions',
                         clearable=False
                     )
-                ], width=6),  
+                ], width=6),
             ],
-            className="mb-5" 
+            className="mb-5"
         ),
 
-        # Dynamic Bar Chart 
+        # Dynamic Bar Chart
         dbc.Row(
             dbc.Col(html.H4("Top 10 Worst Performing SKUs"), width=12),
             className="mb-3"
         ),
         dbc.Row(
             dbc.Col(dcc.Graph(id="rq1-worst-performing-bar"), width=12),
-            className="mb-5" 
+            className="mb-5"
         ),
 
-        # Box Plot 
+        # Box Plot
         dbc.Row(
             dbc.Col(html.H4("Forecast Stability (Promotions)"), width=12),
             className="mb-3"
@@ -176,7 +169,7 @@ app.layout = dbc.Container(
         dbc.Row(
             dbc.Col(dcc.Graph(figure=fig_rq1_box), width=12),
             className="mb-4"
-        ), 
+        ),
 
         #========================================================
 
@@ -252,20 +245,56 @@ app.layout = dbc.Container(
         #========================================================
         # ===================== RQ4 SECTION =====================
 
-html.Hr(),
-dbc.Row(dbc.Col(html.H2(title_rq4, className="text-center text-primary mt-3"))),
-dbc.Row(dbc.Col(html.P(text_rq4, className="text-center lead"))),
-dbc.Row(dbc.Col(dcc.Graph(figure=fig_rq4_SawPlot), width=12), className="mb-4"),
-dbc.Row(dbc.Col(dcc.Graph(figure=fig_rq4_Bars), width=12), className="mb-4"),
-dbc.Row(dbc.Col(dcc.Graph(figure=fig_rq4_Scatter), width=12), className="mb-4"),
+        html.Hr(),
+        dbc.Row(dbc.Col(html.H2(title_rq4, className="text-center text-primary mt-3"))),
+        dbc.Row(dbc.Col(html.P(text_rq4, className="text-center lead"))),
 
+        # Filters (Product + Warehouse)
+        dbc.Row(
+            [
+                dbc.Col(
+                    [
+                        html.Label("Select Product:"),
+                        dcc.Dropdown(
+                            id="rq4-sku-dropdown",  # id kan godt hedde sku-dropdown, det gør ikke noget
+                            options=[
+                                {"label": str(p), "value": p}
+                                for p in sorted(df["product_id"].dropna().unique())
+                            ],
+                            value=sorted(df["product_id"].dropna().unique())[0],
+                            clearable=False,
+                        ),
+                    ],
+                    width=6,
+                ),
+                dbc.Col(
+                    [
+                        html.Label("Select Warehouse:"),
+                        dcc.Dropdown(
+                            id="rq4-warehouse-dropdown",
+                            options=[
+                                {"label": str(w), "value": w}
+                                for w in sorted(df["warehouse_id"].dropna().unique())
+                            ],
+                            value=sorted(df["warehouse_id"].dropna().unique())[0],
+                            clearable=False,
+                        ),
+                    ],
+                    width=6,
+                ),
+            ],
+            className="mb-4",
+        ),
 
+        dbc.Row(dbc.Col(dcc.Graph(id="rq4-sawplot"), width=12), className="mb-4"),
+        dbc.Row(dbc.Col(dcc.Graph(id="rq4-bars"), width=12), className="mb-4"),
+        dbc.Row(dbc.Col(dcc.Graph(id="rq4-scatter"), width=12), className="mb-4"),
 
         # ===================== RQ5 SECTION =====================
         html.Hr(),
         dbc.Row(dbc.Col(html.H2(title_rq5, className="text-center text-primary mt-3"))),
         dbc.Row(dbc.Col(html.P(text_rq5, className="text-center lead"))),
-        
+
         # Filters
         dbc.Row(
             dbc.Col(
@@ -347,13 +376,13 @@ dbc.Row(dbc.Col(dcc.Graph(figure=fig_rq4_Scatter), width=12), className="mb-4"),
 #CALLBACK (RQ1)
 @app.callback(
     Output("rq1-worst-performing-bar", "figure"),
-    [Input('rq1-warehouse-dropdown', "value"), 
+    [Input('rq1-warehouse-dropdown', "value"),
      Input('rq1-region-dropdown', "value")]
 )
 def update_rq1_bar_chart(warehouse_id, region_id):
 
     df_filtered = vis_rq1.filter_dataframe(df_rq1, warehouse_id, region_id)
-    
+
     fig_sku = vis_rq1.create_worst_performing_chart(df_filtered)
 
     return fig_sku
@@ -385,6 +414,23 @@ def update_rq3(selected_suppliers):
     )
     return fig_bar, fig_box, table
 
+#CALLBACK (RQ4)
+@app.callback(
+    Output("rq4-sawplot", "figure"),
+    Output("rq4-bars", "figure"),
+    Output("rq4-scatter", "figure"),
+    Input("rq4-sku-dropdown", "value"),
+    Input("rq4-warehouse-dropdown", "value"),
+)
+def update_rq4(product_id, warehouse_id):
+    fig_saw = vis_rq4.plot_inventory_vs_sales_time(df, product_id, warehouse_id)
+    fig_bars = vis_rq4.plot_weeks_of_inventory_cover(df, top_n=20)
+    fig_scatter = vis_rq4.plot_reorder_point_vs_leadtime_demand(df, top_n=200)
+    return fig_saw, fig_bars, fig_scatter
+
+
+
+
 # CALLBACK (ONLY RQ5)
 @app.callback(
     Output(rq5_sq2_graph_id, "figure"), [Input("rq5_top_products_filter", "value")]
@@ -403,7 +449,6 @@ def rq5_update_sales_per_region_chart(number_of_products_to_show):
         products_to_plot_df
     )
     return new_graph
-
 
 # update performance per month
 @app.callback(
