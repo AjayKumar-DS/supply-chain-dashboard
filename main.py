@@ -7,7 +7,7 @@ import analysis.data_modelling as dm
 import analysis.analysis_rq1 as vis_rq1
 # import analysis.analysis_rq2 as vis_rq2
 import analysis.analysis_rq3 as vis_rq3
-# import analysis.analysis_rq4 as vis_rq4
+import analysis.analysis_rq4 as vis_rq4
 import analysis.analysis_rq5 as vis_rq5
 
 
@@ -62,10 +62,17 @@ rq3_table_id = "rq3-table"
 
 
 # RQ4 (PLACEHOLDER – UNCHANGED)
-title_rq4 = "RQ4: YOUR TITLE HERE"
-text_rq4 = "YOUR THOROUGH EXPLANATION HERE"
-fig_rq4 = None
-rq4_plot_id = "rq4-plot"
+title_rq4 = """Inventory/replenishment.
+1: Are the inventory levels of products aligned with the sales demand?
+2: How many weeks of inventory cover do the products have?
+3: Is the re-order point appropriate based on the actual demand? """
+
+text_rq4 = "In this part, Ill be measuring inventory levels of different warehouses and if the company always have stock enough. So secure stock outages doesnt occour"
+
+fig_rq4_SawPlot = plot_inventory_vs_sales_time(df: pd.DataFrame, sku_id: str, warehouse_id: str):
+fig_rq4_Bars = plot_weeks_of_inventory_cover(df: pd.DataFrame, top_n: int = 20):
+fig_rq4_Scatter = plot_reorder_point_vs_leadtime_demand(df: pd.DataFrame, top_n: int = 200):
+
 
 
 # RQ5 (PLACEHOLDER – UNCHANGED)
