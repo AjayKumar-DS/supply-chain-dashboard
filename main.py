@@ -69,9 +69,12 @@ title_rq4 = """Inventory/replenishment.
 
 text_rq4 = "In this part, Ill be measuring inventory levels of different warehouses and if the company always have stock enough. So secure stock outages doesnt occour"
 
-fig_rq4_SawPlot = plot_inventory_vs_sales_time(df: pd.DataFrame, sku_id: str, warehouse_id: str):
-fig_rq4_Bars = plot_weeks_of_inventory_cover(df: pd.DataFrame, top_n: int = 20):
-fig_rq4_Scatter = plot_reorder_point_vs_leadtime_demand(df: pd.DataFrame, top_n: int = 200):
+default_sku_id = df["sku_id"].iloc[0]
+default_warehouse_id = df["warehouse_id"].iloc[0]
+
+fig_rq4_SawPlot = vis_rq4.plot_inventory_vs_sales_time(df, default_sku_id, default_warehouse_id)
+fig_rq4_Bars = vis_rq4.plot_weeks_of_inventory_cover(df, top_n=20)
+fig_rq4_Scatter = vis_rq4.plot_reorder_point_vs_leadtime_demand(df, top_n=200)
 
 
 
@@ -248,7 +251,16 @@ app.layout = dbc.Container(
 
         #========================================================
         # ===================== RQ4 SECTION =====================
-    
+
+html.Hr(),
+dbc.Row(dbc.Col(html.H2(title_rq4, className="text-center text-primary mt-3"))),
+dbc.Row(dbc.Col(html.P(text_rq4, className="text-center lead"))),
+dbc.Row(dbc.Col(dcc.Graph(figure=fig_rq4_SawPlot), width=12), className="mb-4"),
+dbc.Row(dbc.Col(dcc.Graph(figure=fig_rq4_Bars), width=12), className="mb-4"),
+dbc.Row(dbc.Col(dcc.Graph(figure=fig_rq4_Scatter), width=12), className="mb-4"),
+
+
+
         # ===================== RQ5 SECTION =====================
         html.Hr(),
         dbc.Row(dbc.Col(html.H2(title_rq5, className="text-center text-primary mt-3"))),
