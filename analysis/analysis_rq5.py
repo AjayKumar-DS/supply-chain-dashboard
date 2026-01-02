@@ -160,8 +160,6 @@ def plot_sale_performance_for_products_across_regions(
     # regions are columns. reset_index makes sure the columns are actually present in dataframe
     df = df.stack().reset_index()
 
-    print(df)
-
     # at this point the columns dont have names - rename them
     df.columns = ["region", "product_id", "units_sold"]
     
