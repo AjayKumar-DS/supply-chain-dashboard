@@ -209,7 +209,6 @@ def plot_sale_performance_for_products_across_regions(
         labels={"units_sold": "Units Sold", "product_id_str": "Product ID"},
         title="Units Sold per Product by Region",
         height=600,
-        width=1500,
         text="region",
     )
 
@@ -307,7 +306,6 @@ def plot_demand_per_month(demand_per_month: dict) -> px:
         labels={"units_sold": "Units Sold", "month": "Month"},
         markers=True,
         height=600,
-        width=1500,
         title="Units Sold per Product per Month"
     )
 

@@ -330,8 +330,7 @@ app.layout = dbc.Container(
         dbc.Row(
             dbc.Col(
                 dcc.Graph(id=rq5_sq2_graph_id, figure=rq5_sq2_graph_figure),
-                width="auto",
-                className="mx-auto"
+                width=12
             ),
             className="mb-5",
         ),
@@ -364,8 +363,7 @@ app.layout = dbc.Container(
                     id=rq5_sq3_demand_per_month_graph_id,
                     figure=rq5_sq3_demand_per_month_graph_figure,
                 ),
-                width="auto",
-                className="mx-auto"
+                width=12
             ),
         ),
         #========================================================
