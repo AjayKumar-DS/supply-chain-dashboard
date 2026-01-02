@@ -81,7 +81,7 @@ def get_number_of_products_filter_selector(number_of_products: int):
 
 # sale performance across regions
 def get_sale_performance_for_products_across_regions(
-    df: pd.DataFrame, products_to_include: pd.DataFrame, regions: list[str]
+    df: pd.DataFrame, products_to_include: pd.DataFrame, regions: set[str]
 ) -> dict:
     """
     Gets sale performance for selected products across regions.
@@ -93,7 +93,7 @@ def get_sale_performance_for_products_across_regions(
     :type products_to_include: pd.DataFrame
     
     :param regions: all regions in the data set
-    :type regions: list[str]
+    :type regions: set[str]
 
     :return: a dictionary containing units sold per region per product, where product_id is dictionary key.
     The value of the dictionary is a dictionary, where key is region, and value is units sold in that region.

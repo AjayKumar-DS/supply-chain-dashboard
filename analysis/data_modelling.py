@@ -53,35 +53,35 @@ def changing_columns_name_values(data: pd.DataFrame) -> pd.DataFrame:
     return column_data
 
 
-def get_unique_supplier_id_list(data: pd.DataFrame) -> list[int]:
+def get_unique_supplier_id_list(data: pd.DataFrame) -> set[int]:
     """
-    Returns a list of unique supplier IDs from data set
+    Returns a set of unique supplier IDs from data set
 
     :param data: a dataframe to extract list from
     :type df: pd.DataFrame
 
-    :return: a list of unique supplier IDs
+    :return: a set of unique supplier IDs
     """
-    return sorted(data["supplier_id"].unique())
+    return set(sorted(data["supplier_id"]))
 
-def get_unique_warehouse_id_list(data: pd.DataFrame) -> list[int]:
+def get_unique_warehouse_id_list(data: pd.DataFrame) -> set[int]:
     """
-    Returns a list of unique warehouse IDs from data set
+    Returns a set of unique warehouse IDs from data set
 
     :param data: a dataframe to extract list from
     :type df: pd.DataFrame
 
-    :return: a list of unique warehouse IDs
+    :return: a set of unique warehouse IDs
     """
-    return sorted(data["warehouse_id"].unique())
+    return set(sorted(data["warehouse_id"]))
 
-def get_unique_region_list(data: pd.DataFrame) -> list[str]:
+def get_unique_region_list(data: pd.DataFrame) -> set[str]:
     """
-    Returns a list of unique regions
+    Returns a set of unique regions
 
     :param data: a dataframe to extract list from
     :type df: pd.DataFrame
 
-    :return: a list of unique regions
+    :return: a set of unique regions
     """
-    return sorted(data["region"].unique())
+    return set(sorted(data["region"]))

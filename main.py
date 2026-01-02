@@ -132,7 +132,7 @@ app.layout = dbc.Container(
                     html.Label("Select Warehouse:"),
                     dcc.Dropdown(
                         id="rq1-warehouse-dropdown",
-                        options=["All Warehouses"] + warehouses,
+                        options=["All Warehouses"] + list(warehouses),
                         value='All Warehouses',
                         clearable=False
                     )
@@ -142,7 +142,7 @@ app.layout = dbc.Container(
                     html.Label("Select Region:"),
                     dcc.Dropdown(
                         id="rq1-region-dropdown",
-                        options=["All Regions"] + regions,
+                        options=["All Regions"] + list(regions),
                         value='All Regions',
                         clearable=False
                     )
