@@ -1,5 +1,0 @@
-# Librairies used for data analysis and manipulation
-pandas
-Dash
-dash-bootstrap-components
-plotly
