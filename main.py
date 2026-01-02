@@ -14,13 +14,11 @@ import analysis.analysis_rq5 as vis_rq5
 # Loaded the data
 df = pd.read_csv("data/supply_chain_dataset1.csv")
 
+# Clean data and prepare it for analysis
 df = dm.clean_data(df)
 df = dm.changing_columns_name_values(df)
 
-df_rq1 = vis_rq1.prep_data(df)
-df_promo = vis_rq2.prepare_promotion_data(df)
-
-#Lists of unique IDs
+# Lists of unique IDs
 suppliers = dm.get_unique_supplier_id_list(df)
 warehouses = dm.get_unique_warehouse_id_list(df)
 regions = dm.get_unique_region_list(df)
@@ -28,6 +26,7 @@ regions = dm.get_unique_region_list(df)
 # RQ1 (PLACEHOLDER – UNCHANGED)
 title_rq1 = "RQ1: How accurate is the forecast overall, and which products, locations, or promotions are causing the biggest errors?"
 text_rq1 = "This analysis explores how accurate the sales predictions are. It finds the biggest errors by product and location, and shows how promotions affect the results."
+df_rq1 = vis_rq1.prep_data(df)
 fig_rq1_line = vis_rq1.create_static_line_chart(df_rq1)
 fig_rq1_box = vis_rq1.create_promo_box_plot(df_rq1)
 rq1_plot_id = "rq1-plot"
@@ -38,9 +37,10 @@ promotions are running or in which regions? How many product promotions are usua
 at the same time?"""
 text_rq2 = """This analysis examines how promotional campaigns affect average sales,
             profitability, and how promotions are distributed across regions."""
-fig_promo_sales = vis_rq2.plot_avg_units_sold(df_promo)
-fig_promo_profit = vis_rq2.plot_avg_profit(df_promo)
-fig_promo_region = vis_rq2.plot_promotions_by_region(df_promo)
+df_rq2 = vis_rq2.prepare_promotion_data(df)
+fig_promo_sales = vis_rq2.plot_avg_units_sold(df_rq2)
+fig_promo_profit = vis_rq2.plot_avg_profit(df_rq2)
+fig_promo_region = vis_rq2.plot_promotions_by_region(df_rq2)
 
 # RQ3
 title_rq3 = """
