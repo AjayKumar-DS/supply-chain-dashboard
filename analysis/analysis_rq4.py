@@ -40,10 +40,6 @@ def plot_inventory_vs_sales_time(df: pd.DataFrame, product_id: str, warehouse_id
 
 
 def plot_weeks_of_inventory_cover(df: pd.DataFrame, top_n: int = 20):
-    """
-    How many weeks of inventory cover do the products have?
-    Calculates average weeks of cover per (product, warehouse) and shows top_n as bar chart.
-    """
     grouped = df.groupby(["product_id", "warehouse_id"], as_index=False).agg(
         avg_daily_sales=("units_sold", "mean"),
         avg_inventory=("inventory_level", "mean"),
@@ -58,15 +54,24 @@ def plot_weeks_of_inventory_cover(df: pd.DataFrame, top_n: int = 20):
 
     grouped = grouped.sort_values("avg_daily_sales", ascending=False).head(top_n)
 
+    grouped["product_id"] = grouped["product_id"].astype(str)
+    grouped["warehouse_id"] = grouped["warehouse_id"].astype(str)
+
     fig = px.bar(
         grouped,
         x="product_id",
         y="weeks_cover",
         color="warehouse_id",
-        barmode="group",
         title=f"Weeks of Inventory Cover (top {top_n} product/warehouse combinations)",
+        barmode="group",
     )
-    fig.update_layout(xaxis_title="Product", yaxis_title="Weeks of cover")
+
+    fig.update_layout(
+        barmode="group",
+        xaxis_title="Product",
+        yaxis_title="Weeks of cover",
+    )
+
     return fig
 
 
