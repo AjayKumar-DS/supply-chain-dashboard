@@ -75,14 +75,14 @@ rq4_plot_id = "rq4-plot"
 title_rq5 = "RQ5: Sales performance of top products"
 text_rq5 = "This analysis explores how the demand for top selling products varies in different regions and months"
 
-rq5_n_products_to_show = 3
+rq5_n_products_to_show = 5
 rq5_month_from = 1
 rq5_month_to = 12
 
 rq5_top_n_products = vis_rq5.get_top_n_products_sold(df, rq5_n_products_to_show)
 
 rq5_sq2_sale_performance_per_region_df = (
-    vis_rq5.get_sale_performance_for_products_across_regions(df, rq5_top_n_products)
+    vis_rq5.get_sale_performance_for_products_across_regions(df, rq5_top_n_products, regions)
 )
 rq5_sq2_graph_id = "sale_across_regions_graph"
 rq5_sq2_graph_figure = vis_rq5.plot_sale_performance_for_products_across_regions(
@@ -439,7 +439,7 @@ def rq5_update_sales_per_region_chart(number_of_products_to_show):
 
     # create data structure for products included
     products_to_plot_df = vis_rq5.get_sale_performance_for_products_across_regions(
-        df, products_to_plot
+        df, products_to_plot, regions
     )
 
     # create figure from data structure
