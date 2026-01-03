@@ -1,3 +1,10 @@
+"""
+RQ3: Supplier analysis: how do lead times vary between different suppliers? Which are the most 
+reliable/whose lead times are most consistent? Is there a correlation between supplier lead times 
+and inventory levels?
+"""
+
+
 import analysis.data_modelling as dm
 import pandas as pd
 import plotly.express as px
@@ -95,3 +102,4 @@ def plot_lead_time_vs_inventory(df: pd.DataFrame):
     )
 
     return scatter_fig
+
