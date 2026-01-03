@@ -57,8 +57,8 @@ text_rq3 = """
 
 rq3_plot_id_1 = "rq3-bar"
 rq3_plot_id_2 = "rq3-box"
-rq3_plot_id_3 = "rq3-scatter"
 rq3_table_id = "rq3-table"
+rq3_plot_id_3 = "rq3-scatter"
 
 
 # RQ4 (PLACEHOLDER – UNCHANGED)
@@ -233,15 +233,10 @@ app.layout = dbc.Container(
         className="my-4"
     ),
 
+
     # Scatter plot
-    dbc.Row(
-        dbc.Col(
-            dcc.Graph(
-                id=rq3_plot_id_3,
-                figure=vis_rq3.plot_mean_vs_std(df)
-            ),
-            width=12
-        )
+    dbc.Row(dbc.Col(dcc.Graph(id=rq3_plot_id_3, figure=vis_rq3.plot_lead_time_vs_inventory(df)),width=12),
+        className="mb-4"
     ),
 
         #========================================================
