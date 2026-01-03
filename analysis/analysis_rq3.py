@@ -4,11 +4,7 @@ import plotly.express as px
 
 # RQ3.1: Average Lead Time by Supplier
 def plot_avg_lead_time(df: pd.DataFrame):
-    avg_df = (
-        df.groupby("supplier_id", as_index=False)["supplier_lead_time_days"]
-        .mean()
-        .rename(columns={"supplier_lead_time_days": "avg_lead_time"})
-    )
+    avg_df = (df.groupby("supplier_id", as_index=False)["supplier_lead_time_days"].mean())
 
     # supplier_id as a category
     avg_df["supplier_id"] = avg_df["supplier_id"].astype(str)
@@ -16,11 +12,11 @@ def plot_avg_lead_time(df: pd.DataFrame):
     bar_fig = px.bar(
         avg_df.round(2),
         x="supplier_id",
-        y="avg_lead_time",
+        y="supplier_lead_time_days",
         title="<b>Average Lead Time by Supplier</b>",
         labels={
             "supplier_id": "Supplier ID",
-            "avg_lead_time": "Average Lead Time (days)"
+            "supplier_lead_time_days": "Average Lead Time (days)"
         },
         template="plotly_white",
         height=450
@@ -53,9 +49,7 @@ def plot_lead_time_box(df: pd.DataFrame):
 # SUMMARY TABLE
 def supplier_summary_table(df: pd.DataFrame):
     summary = (
-        df.groupby("supplier_id")["supplier_lead_time_days"]
-        .agg(["mean", "median", "min", "max", "std", "count"])
-        .reset_index()
+        df.groupby("supplier_id")["supplier_lead_time_days"].agg(["mean", "median", "min", "max", "std", "count"]).reset_index()
     )
 
     summary.columns = [
@@ -71,8 +65,7 @@ def supplier_summary_table(df: pd.DataFrame):
 
 # RQ3.3: Mean vs Variability 
 def plot_mean_vs_std(df: pd.DataFrame):
-    stats = df.groupby("supplier_id", as_index=False)["supplier_lead_time_days"] \
-              .agg(mean_lt="mean", std_lt="std")
+    stats = df.groupby("supplier_id", as_index=False)["supplier_lead_time_days"].agg(mean_lt="mean", std_lt="std")
 
     scatter_fig = px.scatter(
         stats.round(2),
@@ -84,6 +77,7 @@ def plot_mean_vs_std(df: pd.DataFrame):
             "mean_lt": "Average Lead Time (days)",
             "std_lt": "Lead Time Variability (Std Dev)"
         },
+        trendline="ols",
         template="plotly_white",
         height=450
     )
@@ -93,7 +87,10 @@ def plot_mean_vs_std(df: pd.DataFrame):
         textfont=dict(size=12, color="black"),
         marker=dict(size=10)
     )
+    scatter_fig.update_traces(
+    selector=dict(mode="lines"),
+    line=dict(color="#2A3F5F", dash="dash")
+    )
     
     scatter_fig.update_layout(margin=dict(l=60, r=40, t=60, b=60))
     return scatter_fig
-
