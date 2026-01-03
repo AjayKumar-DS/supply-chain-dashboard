@@ -176,10 +176,18 @@ app.layout = dbc.Container(
         #========================================================
 
         # ===================== RQ2 SECTION =====================
-        # ===================== RQ2 SECTION =====================
         html.Hr(),
-        dbc.Row(dbc.Col(html.H2(title_rq2, className="text-center text-primary mt-3"))),
-        dbc.Row(dbc.Col(html.P(text_rq2, className="text-center lead"))),
+        # Title
+        dbc.Row(
+            dbc.Col(html.H3(title_rq2, className="text-center text-primary"), width=12),
+            className="mb-3"
+        ),
+
+        # Text Description
+        dbc.Row(
+            dbc.Col(html.P(text_rq2, className="text-center lead"), width=12),
+            className="mb-4"
+        ),
         dbc.Row(dbc.Col(dcc.Graph(figure=fig_promo_sales), width=12)),
         dbc.Row(dbc.Col(dcc.Graph(figure=fig_promo_profit), width=12)),
         dbc.Row(dbc.Col(dcc.Graph(figure=fig_promo_region), width=12)),
@@ -187,8 +195,17 @@ app.layout = dbc.Container(
 
         # ===================== RQ3 SECTION =====================
         html.Hr(),
-        dbc.Row(dbc.Col(html.H2(title_rq3, className="text-center text-primary mt-3"))),
-        dbc.Row(dbc.Col(html.P(text_rq3, className="text-center lead"))),
+        # Title
+        dbc.Row(
+            dbc.Col(html.H3(title_rq3, className="text-center text-primary"), width=12),
+            className="mb-3"
+        ),
+
+        # Text Description
+        dbc.Row(
+            dbc.Col(html.P(text_rq3, className="text-center lead"), width=12),
+            className="mb-4"
+        ),
 
         # Dropdown and Bar chart
         dbc.Row(
@@ -217,6 +234,7 @@ app.layout = dbc.Container(
 
     # Box plot
     dbc.Row(dbc.Col(dcc.Graph(id=rq3_plot_id_2), className="mb-3",width=12)),
+
     # Summary table
     dbc.Row(
         dbc.Col(
@@ -232,7 +250,6 @@ app.layout = dbc.Container(
         ),
         className="my-4"
     ),
-
 
     # Scatter plot
     dbc.Row(dbc.Col(dcc.Graph(id=rq3_plot_id_3, figure=vis_rq3.plot_lead_time_vs_inventory(df)),width=12),
