@@ -63,19 +63,22 @@ def supplier_summary_table(df: pd.DataFrame):
     ]
     return summary.round(2)
 
-# RQ3.3: Mean vs Variability 
-def plot_mean_vs_std(df: pd.DataFrame):
-    stats = df.groupby("supplier_id", as_index=False)["supplier_lead_time_days"].agg(mean_lt="mean", std_lt="std")
+# RQ3.3: Lead Time vs Inventory Level
+def plot_lead_time_vs_inventory(df: pd.DataFrame):
+    inv_df =df.groupby("supplier_id", as_index=False).agg(
+            avg_lead_time=("supplier_lead_time_days", "mean"),
+            avg_inventory=("inventory_level", "mean")
+        )
 
     scatter_fig = px.scatter(
-        stats.round(2),
-        x="mean_lt",
-        y="std_lt",
+        inv_df.round(2),
+        x="avg_lead_time",
+        y="avg_inventory",
         text="supplier_id",
-        title="<b>Average Lead Time vs Variability (All Suppliers)</b>",
+        title="<b>Average Lead Time vs Inventory Level</b>",
         labels={
-            "mean_lt": "Average Lead Time (days)",
-            "std_lt": "Lead Time Variability (Std Dev)"
+            "avg_lead_time": "Average Lead Time (days)",
+            "avg_inventory": "Average Inventory Level"
         },
         trendline="ols",
         template="plotly_white",
@@ -84,13 +87,11 @@ def plot_mean_vs_std(df: pd.DataFrame):
 
     scatter_fig.update_traces(
         textposition="top center",
-        textfont=dict(size=12, color="black"),
         marker=dict(size=10)
     )
     scatter_fig.update_traces(
-    selector=dict(mode="lines"),
-    line=dict(color="#2A3F5F", dash="dash")
+        selector=dict(mode="lines"),
+        line=dict(color="#2A3F5F", dash="dash")
     )
-    
-    scatter_fig.update_layout(margin=dict(l=60, r=40, t=60, b=60))
+
     return scatter_fig
