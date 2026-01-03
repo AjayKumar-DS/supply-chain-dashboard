@@ -403,13 +403,7 @@ def update_rq3(selected_suppliers):
     fig_box = vis_rq3.plot_lead_time_box(filtered_df)
 
     summary_df = vis_rq3.supplier_summary_table(filtered_df)
-    table = dbc.Table.from_dataframe(
-    summary_df,
-    striped=True,
-    bordered=True,
-    hover=True,
-    responsive=True
-    )
+    table = dbc.Table.from_dataframe(summary_df, striped=True, bordered=True, hover=True, responsive=True)
     return fig_bar, fig_box, table
 
 #CALLBACK (RQ4)
