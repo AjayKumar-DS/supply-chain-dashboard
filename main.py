@@ -109,13 +109,15 @@ app.layout = dbc.Container(
 
         # Title
         dbc.Row(
-            dbc.Col(html.H3(title_rq1, className="text-center text-primary"), width=12),
+            dbc.Col(html.H3(title_rq1, 
+                            className="text-center text-primary"), width=12),
             className="mb-3"
         ),
 
         # Text Description
         dbc.Row(
-            dbc.Col(html.P(text_rq1, className="text-center lead"), width=12),
+            dbc.Col(html.P(text_rq1, 
+                           className="text-center lead"), width=12),
             className="mb-4"
         ),
 
