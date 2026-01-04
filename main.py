@@ -210,51 +210,51 @@ app.layout = dbc.Container(
         # Dropdown and Bar chart
         dbc.Row(
         [
-        dbc.Col(
-            dbc.Card(
-                [
-                    dbc.CardHeader("Select Supplier(s)"),
-                    dbc.CardBody(
-                        dcc.Dropdown(
-                            id="rq3-supplier-dropdown",
-                            options=[{"label": str(s), "value": s} for s in suppliers],
-                            multi=True,
-                            placeholder="Select supplier(s)"
-                        )
-                    ),
-                ]
-            ),
-            width=2
-        ),
-         dbc.Col(
-            dcc.Graph(id=rq3_plot_id_1),width=10),
-        ],
-    className="mb-4"
-),
-
-    # Box plot
-    dbc.Row(dbc.Col(dcc.Graph(id=rq3_plot_id_2), className="mb-3",width=12)),
-
-    # Summary table
-    dbc.Row(
-        dbc.Col(
-            dbc.Card(
-                dbc.CardBody(
+            dbc.Col(
+                dbc.Card(
                     [
-                        html.B("Supplier Summary Table",className="fw-bold text-center mb-2"),
-                        html.Div(id=rq3_table_id,style={"overflowX": "auto"}),
+                        dbc.CardHeader("Select Supplier(s)"),
+                        dbc.CardBody(
+                            dcc.Dropdown(
+                                id="rq3-supplier-dropdown",
+                                options=[{"label": str(s), "value": s} for s in suppliers],
+                                multi=True,
+                                placeholder="Select supplier(s)"
+                            )
+                        ),
                     ]
-                )
+                ),
+                width=2
             ),
-            width=12
+            dbc.Col(
+                dcc.Graph(id=rq3_plot_id_1),width=10),
+            ],
+            className="mb-4"
         ),
-        className="my-4"
-    ),
 
-    # Scatter plot
-    dbc.Row(dbc.Col(dcc.Graph(id=rq3_plot_id_3, figure=vis_rq3.plot_lead_time_vs_inventory(df)),width=12),
-        className="mb-4"
-    ),
+        # Box plot
+        dbc.Row(dbc.Col(dcc.Graph(id=rq3_plot_id_2), className="mb-3",width=12)),
+
+        # Summary table
+        dbc.Row(
+            dbc.Col(
+                dbc.Card(
+                    dbc.CardBody(
+                        [
+                            html.B("Supplier Summary Table",className="fw-bold text-center mb-2"),
+                            html.Div(id=rq3_table_id,style={"overflowX": "auto"}),
+                        ]
+                    )
+                ),
+                width=12
+            ),
+            className="my-4"
+        ),
+
+        # Scatter plot
+        dbc.Row(dbc.Col(dcc.Graph(id=rq3_plot_id_3, figure=vis_rq3.plot_lead_time_vs_inventory(df)),width=12),
+            className="mb-4"
+        ),
 
         #========================================================
         # ===================== RQ4 SECTION =====================

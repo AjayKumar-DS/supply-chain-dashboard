@@ -20,6 +20,7 @@ def get_top_n_products_sold(df: pd.DataFrame, number_of_products: int) -> pd.Dat
     """
 
     # Pseudo code
+    # Define column names and get position of each column in the data set so data can be retrieved later
     # Create empty dictionary for units_sold_per_product
     # Go line by line through the data set
     # For each line, use column product_id as dictionary key, and column units_sold as value (int)
@@ -100,9 +101,10 @@ def get_sale_performance_for_products_across_regions(
     """
 
     # Pseudo code
+    # Define column names and get position of each column in the data set so data can be retrieved later
     # Create list of product IDs to check, from products_to_include
     # Create a dictionary with product IDs where key is product ID, and value is dictionary with all regions and sales in those regions
-    # Go through the data set, line by line
+    # Go through the data set, line by line. Skip lines with product that is not in list of included products.
     # For each line, use column region to get the region, and units_sold as value (int)
     # Add value from units_sold column to the dictionary
 
@@ -151,7 +153,7 @@ def plot_sale_performance_for_products_across_regions(
     performance_per_region: dict,
 ) -> px:
     # plotly cannot work with dictionary - convert data to pd DataFrame
-    # each region/productId combination is an entry
+    # each region/productId combination is a unique entry
 
     # create simple DataFrame where product_id are columns and regions are rows
     df = pd.DataFrame(performance_per_region)
@@ -241,9 +243,10 @@ def get_demand_per_month(
     """
     
     # Pseudo code
+    # Define column names and get position of each column in the data set so data can be retrieved later
     # Create list of product IDs to check, from products_to_include
     # Create a dictionary with product IDs where key is product ID, and value is dictionary with all months and sales in those months
-    # Go through the data set, line by line
+    # Go through the data set, line by line. Skip lines with product that is not in list of included products.
     # For each line, use column date to get the month number, and units_sold as value (int). If month is outside of range, skip the row
     # Add value from units_sold column to the dictionary
         
