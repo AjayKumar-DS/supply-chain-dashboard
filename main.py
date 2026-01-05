@@ -270,7 +270,7 @@ app.layout = dbc.Container(
                     [
                         html.Label("Select Product:"),
                         dcc.Dropdown(
-                            id="rq4-sku-dropdown",  # id kan godt hedde sku-dropdown, det gør ikke noget
+                            id="rq4-sku-dropdown",
                             options=[
                                 {"label": str(p), "value": p}
                                 for p in sorted(df["product_id"].dropna().unique())
@@ -419,6 +419,7 @@ def update_rq3(selected_suppliers):
     summary_df = vis_rq3.supplier_summary_table(filtered_df)
     table = dbc.Table.from_dataframe(summary_df, striped=True, bordered=True, hover=True, responsive=True)
     return fig_bar, fig_box, table
+
 
 #CALLBACK (RQ4)
 @app.callback(
