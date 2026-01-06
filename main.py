@@ -2,7 +2,6 @@ import dash
 from dash import dcc, html, Input, Output
 import dash_bootstrap_components as dbc
 import pandas as pd
-
 import analysis.data_modelling as dm
 import analysis.analysis_rq1 as vis_rq1
 import analysis.analysis_rq2 as vis_rq2
