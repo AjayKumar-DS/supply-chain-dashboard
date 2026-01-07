@@ -18,7 +18,7 @@ def plot_inventory_vs_sales_time(df: pd.DataFrame, product_id: str, warehouse_id
     data = df[(df["product_id"] == product_id) & (df["warehouse_id"] == warehouse_id)].copy()
 
     if data.empty:
-        # Return an empty figure instead of crashing the whole dashboard
+        # Return empty fig, without trashing
         return px.line(title="No data for selected product/warehouse")
 
     plot_df = data[["date", "units_sold", "inventory_level"]].melt(

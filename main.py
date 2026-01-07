@@ -96,6 +96,7 @@ rq5_sq3_demand_per_month_graph_figure = vis_rq5.plot_demand_per_month(
     rq5_sq3_demand_per_month_df
 )
 
+
 # INITIALIZE DASH APP
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
@@ -290,7 +291,7 @@ app.layout = dbc.Container(
                                 for w in sorted(df["warehouse_id"].dropna().unique())
                             ],
                             value=sorted(df["warehouse_id"].dropna().unique())[0],
-                            clearable=False,
+                            clearable=False
                         ),
                     ],
                     width=6,
@@ -426,7 +427,7 @@ def update_rq3(selected_suppliers):
     Output("rq4-bars", "figure"),
     Output("rq4-scatter", "figure"),
     Input("rq4-sku-dropdown", "value"),
-    Input("rq4-warehouse-dropdown", "value"),
+    Input("rq4-warehouse-dropdown", "value")
 )
 def update_rq4(product_id, warehouse_id):
     fig_saw = vis_rq4.plot_inventory_vs_sales_time(df, product_id, warehouse_id)
