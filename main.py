@@ -18,11 +18,11 @@ df = dm.clean_data(df)
 df = dm.changing_columns_name_values(df)
 
 # Lists of unique IDs
-suppliers = dm.get_unique_supplier_id_list(df)
-warehouses = dm.get_unique_warehouse_id_list(df)
-regions = dm.get_unique_region_list(df)
+suppliers = dm.get_unique_supplier_id(df)
+warehouses = dm.get_unique_warehouse_id(df)
+regions = dm.get_unique_region(df)
 
-# RQ1 (PLACEHOLDER – UNCHANGED)
+# RQ1
 title_rq1 = "RQ1: How accurate is the forecast overall, and which products, locations, or promotions are causing the biggest errors?"
 text_rq1 = "This analysis explores how accurate the sales predictions are. It finds the biggest errors by product and location, and shows how promotions affect the results."
 df_rq1 = vis_rq1.prep_data(df)
@@ -30,7 +30,7 @@ fig_rq1_line = vis_rq1.create_static_line_chart(df_rq1)
 fig_rq1_box = vis_rq1.create_promo_box_plot(df_rq1)
 rq1_plot_id = "rq1-plot"
 
-# RQ2 (PLACEHOLDER – UNCHANGED)
+# RQ2
 title_rq2 = """RQ2:  How do promotions impact sales volume/profitability? Is there a pattern - when the 
 promotions are running or in which regions? How many product promotions are usually running 
 at the same time?"""
@@ -60,7 +60,7 @@ rq3_table_id = "rq3-table"
 rq3_plot_id_3 = "rq3-scatter"
 
 
-# RQ4 (PLACEHOLDER – UNCHANGED)
+# RQ4
 title_rq4 = """RQ4: Inventory/replenishment."""
 
 text_rq4 = """ Are the inventory levels of products aligned with the sales demand?
@@ -70,7 +70,7 @@ text_rq4 = """ Are the inventory levels of products aligned with the sales deman
 rq4_plot_id = "rq4-plot"
 
 
-# RQ5 (PLACEHOLDER – UNCHANGED)
+# RQ5
 title_rq5 = "RQ5: Sales performance of top products"
 text_rq5 = "This analysis explores how the demand for top selling products varies in different regions and months"
 
@@ -176,6 +176,7 @@ app.layout = dbc.Container(
         #========================================================
 
         # ===================== RQ2 SECTION =====================
+
         html.Hr(),
         # Title
         dbc.Row(
@@ -191,6 +192,7 @@ app.layout = dbc.Container(
         dbc.Row(dbc.Col(dcc.Graph(figure=fig_promo_sales), width=12)),
         dbc.Row(dbc.Col(dcc.Graph(figure=fig_promo_profit), width=12)),
         dbc.Row(dbc.Col(dcc.Graph(figure=fig_promo_region), width=12)),
+
         #========================================================
 
         # ===================== RQ3 SECTION =====================
@@ -399,7 +401,7 @@ def update_rq1_bar_chart(warehouse_id, region_id):
 
     return fig_sku
 
-# CALLBACK (ONLY RQ3 LOGIC)
+# CALLBACK (RQ3)
 @app.callback(
     Output(rq3_plot_id_1, "figure"),
     Output(rq3_plot_id_2, "figure"),
@@ -421,7 +423,7 @@ def update_rq3(selected_suppliers):
     return fig_bar, fig_box, table
 
 
-#CALLBACK (RQ4)
+#CALLBACK (Rq-4)
 @app.callback(
     Output("rq4-sawplot", "figure"),
     Output("rq4-bars", "figure"),
@@ -438,7 +440,7 @@ def update_rq4(product_id, warehouse_id):
 
 
 
-# CALLBACK (ONLY RQ5)
+# CALLBACK (RQ5)
 @app.callback(
     Output(rq5_sq2_graph_id, "figure"), [Input("rq5_top_products_filter", "value")]
 )

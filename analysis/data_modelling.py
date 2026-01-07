@@ -53,7 +53,7 @@ def changing_columns_name_values(data: pd.DataFrame) -> pd.DataFrame:
     return column_data
 
 
-def get_unique_supplier_id_list(data: pd.DataFrame) -> set[int]:
+def get_unique_supplier_id(data: pd.DataFrame) -> set[int]:
     """
     Returns a set of unique supplier IDs from data set
 
@@ -64,7 +64,7 @@ def get_unique_supplier_id_list(data: pd.DataFrame) -> set[int]:
     """
     return set(sorted(data["supplier_id"]))
 
-def get_unique_warehouse_id_list(data: pd.DataFrame) -> set[int]:
+def get_unique_warehouse_id(data: pd.DataFrame) -> set[int]:
     """
     Returns a set of unique warehouse IDs from data set
 
@@ -75,7 +75,7 @@ def get_unique_warehouse_id_list(data: pd.DataFrame) -> set[int]:
     """
     return set(sorted(data["warehouse_id"]))
 
-def get_unique_region_list(data: pd.DataFrame) -> set[str]:
+def get_unique_region(data: pd.DataFrame) -> set[str]:
     """
     Returns a set of unique regions
 
