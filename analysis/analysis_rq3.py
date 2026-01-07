@@ -4,7 +4,6 @@ reliable/whose lead times are most consistent? Is there a correlation between su
 and inventory levels?
 """
 
-
 import analysis.data_modelling as dm
 import pandas as pd
 import plotly.express as px
@@ -12,10 +11,8 @@ import plotly.express as px
 # RQ3.1: Average Lead Time by Supplier
 def plot_avg_lead_time(df: pd.DataFrame):
     avg_df = (df.groupby("supplier_id", as_index=False)["supplier_lead_time_days"].mean())
-
-    # supplier_id as a category
-    avg_df["supplier_id"] = avg_df["supplier_id"].astype(str)
-
+    avg_df["supplier_id"] = avg_df["supplier_id"].astype(str) # converting it to string to make it a category
+    
     bar_fig = px.bar(
         avg_df.round(2),
         x="supplier_id",
@@ -30,14 +27,12 @@ def plot_avg_lead_time(df: pd.DataFrame):
     )
     return bar_fig
 
-
 # RQ3.2: Lead Time Distribution by Supplier
 def plot_lead_time_box(df: pd.DataFrame):
     df_plot = df.copy()
+    supplier_order = sorted(df_plot["supplier_id"].unique())
     df_plot["supplier_id"] = df_plot["supplier_id"].astype(str)
-
-    supplier_order = sorted(df_plot["supplier_id"].unique(), key=int)
-
+    
     box_fig = px.box(
         df_plot,
         x="supplier_id",
@@ -58,7 +53,6 @@ def supplier_summary_table(df: pd.DataFrame):
     summary = (
         df.groupby("supplier_id")["supplier_lead_time_days"].agg(["mean", "median", "min", "max", "std", "count"]).reset_index()
     )
-
     summary.columns = [
         "Supplier ID",
         "Average Lead Time (Days)",
@@ -66,7 +60,7 @@ def supplier_summary_table(df: pd.DataFrame):
         "Minimum Lead Time (Days)",
         "Maximum Lead Time (Days)",
         "Lead Time Variability (Std Dev)",
-        "Total Orders",
+        "Total Orders"
     ]
     return summary.round(2)
 
@@ -91,7 +85,6 @@ def plot_lead_time_vs_inventory(df: pd.DataFrame):
         template="plotly_white",
         height=450
     )
-
     scatter_fig.update_traces(
         textposition="top center",
         marker=dict(size=10)
@@ -100,6 +93,4 @@ def plot_lead_time_vs_inventory(df: pd.DataFrame):
         selector=dict(mode="lines"),
         line=dict(color="#2A3F5F", dash="dash")
     )
-
     return scatter_fig
-
