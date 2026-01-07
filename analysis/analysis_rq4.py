@@ -45,12 +45,8 @@ def plot_weeks_of_inventory_cover(df: pd.DataFrame, top_n: int = 20):
         avg_inventory=("inventory_level", "mean"),
     )
 
-    grouped["weeks_cover"] = grouped.apply(
-        lambda row: row["avg_inventory"] / (row["avg_daily_sales"] * 7)
-        if row["avg_daily_sales"] > 0
-        else np.nan,
-        axis=1,
-    )
+    grouped["weeks_cover"] = grouped["avg_inventory"] / (grouped["avg_daily_sales"] * 7)
+    grouped.loc[grouped["avg_daily_sales"] <= 0, "weeks_cover"] = np.nan
 
     grouped = grouped.sort_values("avg_daily_sales", ascending=False).head(top_n)
 

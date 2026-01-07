@@ -263,7 +263,7 @@ app.layout = dbc.Container(
         dbc.Row(dbc.Col(html.H2(title_rq4, className="text-center text-primary mt-3"))),
         dbc.Row(dbc.Col(html.P(text_rq4, className="text-center lead"))),
 
-        # Filters (Product + Warehouse)
+        # Product & Warehouse dropdown part
         dbc.Row(
             [
                 dbc.Col(
