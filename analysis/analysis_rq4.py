@@ -33,7 +33,7 @@ def plot_inventory_vs_sales_time(df: pd.DataFrame, product_id: str, warehouse_id
         x="date",
         y="Value",
         color="Metric",
-        title=f"Inventory vs. Sales over time – {product_id} @ {warehouse_id}",
+        title=f"Inventory vs. Sales over time – ({product_id}) & ({warehouse_id})",
     )
     fig.update_layout(xaxis_title="Date", yaxis_title="Units")
     return fig
