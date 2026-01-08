@@ -10,7 +10,7 @@ import plotly.express as px
 
 # RQ3.1: Average Lead Time by Supplier
 def plot_avg_lead_time(df: pd.DataFrame):
-    avg_df = (df.groupby("supplier_id", as_index=False)["supplier_lead_time_days"].mean())
+    avg_df = df.groupby("supplier_id", as_index=False)["supplier_lead_time_days"].mean()
     avg_df["supplier_id"] = avg_df["supplier_id"].astype(str) # converting it to string to make it a category
     
     bar_fig = px.bar(
@@ -94,3 +94,4 @@ def plot_lead_time_vs_inventory(df: pd.DataFrame):
         line=dict(color="#2A3F5F", dash="dash")
     )
     return scatter_fig
+
