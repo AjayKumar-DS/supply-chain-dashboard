@@ -406,10 +406,9 @@ def update_rq1_bar_chart(warehouse_id, region_id):
     Output(rq3_plot_id_1, "figure"),
     Output(rq3_plot_id_2, "figure"),
     Output(rq3_table_id, "children"),
-    Input("rq3-supplier-dropdown", "value"),
+    Input("rq3-supplier-dropdown", "value")
 )
 def update_rq3(selected_suppliers):
-
     if selected_suppliers:
         filtered_df = df[df["supplier_id"].isin(selected_suppliers)]
     else:
@@ -417,11 +416,9 @@ def update_rq3(selected_suppliers):
 
     fig_bar = vis_rq3.plot_avg_lead_time(filtered_df)
     fig_box = vis_rq3.plot_lead_time_box(filtered_df)
-
     summary_df = vis_rq3.supplier_summary_table(filtered_df)
     table = dbc.Table.from_dataframe(summary_df, striped=True, bordered=True, hover=True, responsive=True)
     return fig_bar, fig_box, table
-
 
 #CALLBACK (Rq-4)
 @app.callback(
