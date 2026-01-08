@@ -223,7 +223,7 @@ app.layout = dbc.Container(
                                 multi=True,
                                 placeholder="Select supplier(s)"
                             )
-                        ),
+                        )
                     ]
                 ),
                 width=2
@@ -244,7 +244,7 @@ app.layout = dbc.Container(
                     dbc.CardBody(
                         [
                             html.B("Supplier Summary Table",className="fw-bold text-center mb-2"),
-                            html.Div(id=rq3_table_id,style={"overflowX": "auto"}),
+                            html.Div(id=rq3_table_id,style={"overflowX": "auto"})
                         ]
                     )
                 ),
