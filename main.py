@@ -279,9 +279,9 @@ app.layout = dbc.Container(
                             ],
                             value=sorted(df["product_id"].dropna().unique())[0],
                             clearable=False,
-                        ),
+                        )
                     ],
-                    width=6,
+                    width=6
                 ),
                 dbc.Col(
                     [
@@ -294,12 +294,12 @@ app.layout = dbc.Container(
                             ],
                             value=sorted(df["warehouse_id"].dropna().unique())[0],
                             clearable=False
-                        ),
+                        )
                     ],
-                    width=6,
-                ),
+                    width=6
+                )
             ],
-            className="mb-4",
+            className="mb-4"
         ),
 
         dbc.Row(dbc.Col(dcc.Graph(id="rq4-sawplot"), width=12), className="mb-4"),
